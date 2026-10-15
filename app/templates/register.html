@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Create account - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="auth card">
+    <h1>Create account</h1>
+    <form method="post">
+        <label for="name">Your name</label>
+        <input id="name" type="text" name="name" required autofocus>
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" required>
+        <label for="password">Password (at least 6 characters)</label>
+        <input id="password" type="password" name="password" minlength="6" required>
+        <button type="submit" class="btn wide">Create account</button>
+    </form>
+    <p class="muted">Already registered? <a href="{{ url_for('auth.login') }}">Sign in</a></p>
+</section>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Add product' if is_new else 'Edit product' }} - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<section class="auth card wide-form">
+    <h1>{{ 'Add product' if is_new else 'Edit product' }}</h1>
+    {% set cur = product.category_id if product.category_id is defined else None %}
+    <form method="post" enctype="multipart/form-data">
+        <label for="name">Name</label>
+        <input id="name" type="text" name="name" maxlength="120" value="{{ product.name or '' }}" required>
+
+        <label for="price">Price (₹)</label>
+        <input id="price" type="number" name="price" step="0.01" min="0.01" value="{{ product.price or '' }}" required>
+
+        <label for="stock">Stock</label>
+        <input id="stock" type="number" name="stock" min="0" value="{{ product.stock if product.stock is not none else 0 }}" required>
+
+        <label for="category_id">Category</label>
+        <select id="category_id" name="category_id">
+            <option value="">No category</option>
+            {% for c in categories %}
+                <option value="{{ c.id }}" {{ 'selected' if cur == c.id else '' }}>{{ c.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4">{{ product.description or '' }}</textarea>
+
+        <label for="image">Image (png, jpg or webp, up to 2 MB)</label>
+        <input id="image" type="file" name="image" accept="image/png,image/jpeg,image/webp">
+
+        <button type="submit" class="btn wide">{{ 'Add product' if is_new else 'Save changes' }}</button>
+    </form>
+    <p><a href="{{ url_for('admin.dashboard') }}">Back to products</a></p>
+</section>
+{% endblock %}

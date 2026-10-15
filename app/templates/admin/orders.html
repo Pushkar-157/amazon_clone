@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}All orders - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="admin-head">
+    <h1>All orders</h1>
+    <a class="btn secondary" href="{{ url_for('admin.dashboard') }}">Manage products</a>
+</div>
+
+{% for order in orders %}
+<section class="card order">
+    <div class="order-head">
+        <div>
+            <strong>Order #{{ order.id }}</strong>
+            <span class="muted">{{ order.user.name }} · {{ order.created_at.strftime('%d %b %Y') }}</span>
+        </div>
+        <span class="status {{ order.status }}">{{ order.status }}</span>
+    </div>
+    <ul class="lines">
+        {% for item in order.items %}
+        <li><span>{{ item.product.name }} × {{ item.quantity }}</span><span>₹{{ '%.2f' % (item.price * item.quantity) }}</span></li>
+        {% endfor %}
+    </ul>
+    <p class="muted">Ships to: {{ order.shipping_address }}</p>
+    <div class="order-foot">
+        <strong>Total ₹{{ '%.2f' % order.total }}</strong>
+        <form method="post" action="{{ url_for('admin.update_order_status', oid=order.id) }}" class="inline row">
+            <select name="status" aria-label="New status for order {{ order.id }}">
+                {% for s in statuses %}<option value="{{ s }}" {{ 'selected' if s == order.status else '' }}>{{ s }}</option>{% endfor %}
+            </select>
+            <button type="submit" class="btn secondary">Update status</button>
+        </form>
+    </div>
+</section>
+{% else %}
+<div class="empty"><p>No orders have been placed yet.</p></div>
+{% endfor %}
+{% endblock %}

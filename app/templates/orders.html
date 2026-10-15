@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Your orders - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<h1>Your orders</h1>
+
+{% if placed %}
+    <div class="flash success">Order #{{ placed }} was placed. Thank you for shopping with us!</div>
+{% endif %}
+
+{% for order in orders %}
+<section class="card order">
+    <div class="order-head">
+        <div>
+            <strong>Order #{{ order.id }}</strong>
+            <span class="muted">placed {{ order.created_at.strftime('%d %b %Y') }}</span>
+        </div>
+        <span class="status {{ order.status }}">{{ order.status }}</span>
+    </div>
+    <ul class="lines">
+        {% for item in order.items %}
+        <li><span>{{ item.product.name }} × {{ item.quantity }}</span><span>₹{{ '%.2f' % (item.price * item.quantity) }}</span></li>
+        {% endfor %}
+    </ul>
+    <p class="muted">Ships to: {{ order.shipping_address }}</p>
+    <div class="order-foot">
+        <strong>Total ₹{{ '%.2f' % order.total }}</strong>
+        {% if order.status == 'placed' %}
+        <form method="post" action="{{ url_for('pages.cancel_order', oid=order.id) }}" class="inline">
+            <button type="submit" class="btn secondary">Cancel order</button>
+        </form>
+        {% endif %}
+    </div>
+</section>
+{% else %}
+<div class="empty">
+    <p>You haven't placed any orders yet.</p>
+    <a class="btn" href="{{ url_for('pages.home') }}">Start shopping</a>
+</div>
+{% endfor %}
+{% endblock %}

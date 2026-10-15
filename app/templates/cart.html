@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Your cart - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<h1>Your cart</h1>
+<div id="cart-root"><p class="muted">Loading your cart…</p></div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/babel" src="{{ url_for('static', filename='js/Cart.jsx') }}"></script>
+{% endblock %}

@@ -1,0 +1,7 @@
+Flask>=3.0
+Flask-SQLAlchemy>=3.1
+# 2.0.x on purpose: it falls back to plain Python if Windows blocks its compiled add-ons.
+SQLAlchemy>=2.0.40,<2.1
+# Pure-Python Postgres driver (works with Supabase, nothing compiled).
+pg8000>=1.31
+python-dotenv>=1.0

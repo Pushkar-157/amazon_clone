@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Manage products - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="admin-head">
+    <h1>Manage products</h1>
+    <div>
+        <a class="btn secondary" href="{{ url_for('admin.orders') }}">View orders</a>
+        <a class="btn" href="{{ url_for('admin.new_product') }}">Add product</a>
+    </div>
+</div>
+
+<div class="table-wrap">
+<table>
+    <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Visibility</th><th></th></tr></thead>
+    <tbody>
+    {% for p in products %}
+        <tr class="{{ '' if p.is_active else 'dim' }}">
+            <td><a href="{{ url_for('pages.product_detail', pid=p.id) }}">{{ p.name }}</a></td>
+            <td>{{ p.category.name if p.category else '-' }}</td>
+            <td>₹{{ '%.2f' % p.price }}</td>
+            <td>{{ p.stock }}</td>
+            <td>{{ 'Visible' if p.is_active else 'Hidden' }}</td>
+            <td class="actions">
+                <a href="{{ url_for('admin.edit_product', pid=p.id) }}">Edit</a>
+                <form method="post" action="{{ url_for('admin.toggle_product', pid=p.id) }}" class="inline">
+                    <button type="submit" class="linklike">{{ 'Hide' if p.is_active else 'Show' }}</button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

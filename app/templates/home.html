@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <h1>Shop everyday essentials</h1>
+    <p>Browse by category, sort by price, and check out in a few clicks.</p>
+</section>
+
+<div id="products-root"><p class="muted">Loading products…</p></div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/babel" src="{{ url_for('static', filename='js/ProductBrowser.jsx') }}"></script>
+{% endblock %}
